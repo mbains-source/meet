@@ -65,4 +65,3 @@ module.exports.getAccessToken = async (event) => {
       };
     });
 };
-
