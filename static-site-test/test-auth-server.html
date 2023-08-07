@@ -33,7 +33,7 @@
       const resultElement = document.getElementById("result");
       const resultLink = document.getElementById("authURL");
       // Replace this with your own endpoint
-      const getAuthURL = "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.events.public.readonly&response_type=code&client_id=130952763263-q962q4gnjdp3qh80tgjad1tam4leqf0v.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fmbains-source.github.io%2Fmeet%2F";
+      const getAuthURL = "https://sud9585dl4.execute-api.us-west-1.amazonaws.com/dev/api/get-auth-url";
 
       getAuthUrlButton.onclick = function () {
         fetch(getAuthURL)
