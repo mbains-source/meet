@@ -1,10 +1,13 @@
+// src/App.js
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-    </div>
-  );
+const App = () => {
+ return (
+   <div className="App">
+     <div id="event-list"></div>
+   </div>
+ );
 }
 
 export default App;
