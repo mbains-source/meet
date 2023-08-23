@@ -38,7 +38,7 @@ describe('<App /> integration', () => {
     await user.click(berlinSuggestionItem);
 
     const EventListDOM = AppDOM.querySelector('#event-list');
-    const allRenderedEventItems = within(EventListDOM).queryAllByRole('listitem');   
+    const allRenderedEventItems = within(EventListDOM).queryAllByRole('listitem');
 
     const allEvents = await getEvents();
     const berlinEvents = allEvents.filter(
@@ -46,6 +46,7 @@ describe('<App /> integration', () => {
     );
 
     expect(allRenderedEventItems.length).toBe(berlinEvents.length);
+
     allRenderedEventItems.forEach(event => {
       expect(event.textContent).toContain("Berlin, Germany");
     });
