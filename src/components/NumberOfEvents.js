@@ -1,31 +1,43 @@
 // src/components/NumberOfEvents.js
 
-const NumberOfEvents = ({ setCurrentNOE, setErrorAlert }) => {
-  const handleInputChanged = (event) => {
-    const value = event.target.value;
-
-    if (isNaN(value)) {
-      setErrorAlert('value is not a number');
-    } else if (value > 50) {
-      setErrorAlert('maximum value is 50');
-    } else if (value <= 0) {
-      setErrorAlert('minimum value is 1');
-    } else {
-      setErrorAlert('');
-      setCurrentNOE(value);
-    }
+class NumberofEvents extends Component {
+  state = {
+    numberofevents: 32,
+    errorText: "",
   };
 
-  return (
-    <div id="number-of-events">
-      <input
-        type="text"
-        defaultValue="32"
-        onChange={handleInputChanged}
-        data-testid="numberOfEventsInput"
-      />
-    </div>
-  );
-};
+  handleInputChanged = (event) => {
+    let value = parseInt(event.target.value);
 
-export default NumberOfEvents;
+    if (value < 1 || value > 32) {
+      this.setState({
+        numberofevents: value,
+        errorText: "Select a number from 1 to 32.",
+      });
+    } else {
+      this.setState({
+        numberofevents: value,
+        errorText: "",
+      });
+    }
+
+    this.props.updateEvents(value);
+  };
+
+  render() {
+    return (
+      <div className="numberOfEvents">
+        <ErrorAlert text={this.state.errorText} />
+        <label htmlFor="number-of-events">Number of Events:</label>
+        <input
+          id="number-of-events"
+          type="number"
+          value={this.state.numberofevents}
+          onChange={this.handleInputChanged}
+        />
+      </div>
+    );
+  }
+}
+
+export default NumberofEvents;
