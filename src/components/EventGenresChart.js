@@ -15,14 +15,25 @@ const EventGenre = ({ events }) => {
 
   useEffect(() => { setData(() => getData()); }, [events]);
 
+  const COLORS = ['#2364aa', '#3da5d9', '#73bfb8', '#fec601', '#ea7317'];
 
   return (
-    <ResponsiveContainer height={}>
-      <PieChart width={} height={}>
+    <ResponsiveContainer height={400}>
+      <PieChart width={400} height={400}>
         <Tooltip />
         <Legend verticalAlign="bottom" />
         <Pie
-   
+          data={data}
+          cx={200}
+          cy={200}
+          labelLine={false}
+          label={true}
+          outerRadius={80}
+          fill="#8884d8"
+          dataKey="value"
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
       </PieChart>
