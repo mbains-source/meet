@@ -28,7 +28,7 @@ function WelcomeScreen(props) {
         </div>
       </div>
       <a
-        href="https://luisa-inc.github.io/meet/privacy.html"
+        href="https://mbains-source.github.io/meet/privacy.html"
         rel="nofollow noopener"
       >
         Privacy policy
