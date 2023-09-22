@@ -1,4 +1,5 @@
-// src/components/NumberOfEvents.js
+import React, { Component } from "react";
+import { ErrorAlert } from "./Alert";
 
 class NumberofEvents extends Component {
   state = {
