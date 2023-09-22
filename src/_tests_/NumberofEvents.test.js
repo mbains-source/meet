@@ -1,30 +1,36 @@
-// src/__tests__/NumberOfEvents.test.js
+import React from "react";
 
-import userEvent from '@testing-library/user-event';
-import NumberOfEvents from '../components/NumberOfEvents';
-import { render } from '@testing-library/react';
 
-describe('<NumberOfEvents /> Component', () => {
-  let NumberOfEventsComponent;
-  beforeEach(() => {
-    NumberOfEventsComponent = render(
-      <NumberOfEvents setCurrentNOE={() => {}} setErrorAlert={() => {}} />
-    );
-  });
+const NumberOfEvents = ( { setCurrentNOE, setErrorAlert }) => {
+    const handleInputChanged = (event) => {
+        const value = event.target.value;
+        setCurrentNOE(value);
 
-  test('has the input textbox', () => {
-    const input = NumberOfEventsComponent.queryByRole('textbox');
-    expect(input).toBeInTheDocument();
-  });
+        let errorText;
+        if  (isNaN(value)) {
+            errorText ="Please enter a number"
+        } else if (value <=0) {
+            errorText ="Number must be at least 1"
 
-  test('default number of events is 32', () => {
-    const input = NumberOfEventsComponent.queryByRole('textbox');
-    expect(input).toHaveValue('32');
-  });
+        } else {
+            errorText =""
+        }
+        setErrorAlert(errorText);
 
-  test('updates number of events when user types', async () => {
-    const input = NumberOfEventsComponent.queryByRole('textbox');
-    await userEvent.type(input, '{backspace}{backspace}10');
-    expect(input).toHaveValue('10');
-  });
-});
+    }
+    
+    return (
+        <div id="number-of-events">
+            <b>Number of Events: </b>
+            <input 
+            type= "text"
+            defaultValue="32"
+            className="textbox"
+            placeholder="Enter a number"
+            onChange={handleInputChanged}
+            />
+        </div>
+    )
+}
+
+export default NumberOfEvents;
