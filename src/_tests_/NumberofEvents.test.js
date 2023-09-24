@@ -1,44 +1,36 @@
-import React, { Component } from "react";
-import { ErrorAlert } from "./Alert";
+/* eslint-disable testing-library/no-render-in-setup */
+/* eslint-disable testing-library/prefer-screen-queries */
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import NumberOfEvents from '../components/NumberOfEvents'
 
-class NumberofEvents extends Component {
-  state = {
-    numberofevents: 32,
-    errorText: "",
-  };
+describe('<NumberOfEvents /> component', () => {
+    let NumberOfEventsComponent;
+    beforeEach( () => {
+        NumberOfEventsComponent = render(<NumberOfEvents/>)
+    })
 
-  handleInputChanged = (event) => {
-    let value = parseInt(event.target.value);
+    test('has an element with "textbox" role', () => {
+        const numberTextBox = NumberOfEventsComponent.queryByRole('textbox');
+        expect(numberTextBox).toBeInTheDocument();
+        expect(numberTextBox).toHaveClass("textbox");
+    });
 
-    if (value < 1 || value > 32) {
-      this.setState({
-        numberofevents: value,
-        errorText: "Select a number from 1 to 32.",
-      });
-    } else {
-      this.setState({
-        numberofevents: value,
-        errorText: "",
-      });
-    }
+    test('default 32 number of event lists', async () => {
+        const numberTextBox = NumberOfEventsComponent.queryByRole('textbox');
+        expect(numberTextBox).toHaveValue("32")
+    })
 
-    this.props.updateEvents(value);
-  };
+    test('user set number of events to be listed', async () => {
+        const handleEventNumberChange = jest.fn();
+        NumberOfEventsComponent.rerender(<NumberOfEvents 
+            onEventNumberChange={handleEventNumberChange}
+            setCurrentNOE={()=>{}}
+            setErrorAlert={() => {}}
+            />)
+        const numberTextBox = NumberOfEventsComponent.queryByRole("textbox");
+        await userEvent.type(numberTextBox, "{backspace}{backspace}10");
+        expect(numberTextBox).toHaveValue('10');
+    })
 
-  render() {
-    return (
-      <div className="numberOfEvents">
-        <ErrorAlert text={this.state.errorText} />
-        <label htmlFor="number-of-events">Number of Events:</label>
-        <input
-          id="number-of-events"
-          type="number"
-          value={this.state.numberofevents}
-          onChange={this.handleInputChanged}
-        />
-      </div>
-    );
-  }
-}
-
-export default NumberofEvents;
+})
