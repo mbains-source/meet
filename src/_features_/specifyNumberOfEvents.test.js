@@ -1,76 +1,59 @@
-import { loadFeature, defineFeature } from "jest-cucumber";
-import { render, waitFor, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import App from "../App";
+import { render, within, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { loadFeature, defineFeature } from 'jest-cucumber';
+import App from '../App';
 
-const feature = loadFeature("./src/features/specifyNumberOfEvents.feature");
+const feature = loadFeature('./src/features/specifyNumberOfEvents.feature');
 
-defineFeature(feature, (test) => {
-  // Scenario 1 //
-  test("When user hasn't specified a number, 32 events are shown by default", ({
-    given,
-    when,
-    then,
-  }) => {
-    let AppComponent;
-    given("the user at main page and shows list of events", () => {
-      AppComponent = render(<App />);
-    });
+defineFeature(feature, test => {
+    test('When user hasn\'t specified a number, 32 is the default', ({ given, when, then }) => {
+        let AppComponent;
+        let AppDOM;
+        given('the main page is open', () => {
+            AppComponent = render(<App />);
+            AppDOM = AppComponent.container.firstChild;
+        });
 
-    let AppDOM;
-    let EventListDOM;
-    when(
-      "the user did not specify number of events to be displayed",
-      async () => {
-        AppDOM = AppComponent.container.firstChild;
-        EventListDOM = AppDOM.querySelector("#event-list");
-      }
-    );
+        let NumberOfEventsDOM;
+        let NumberOfEventsInput;
+        when('the user doesn\'t specify the number of events to display', () => {
+            NumberOfEventsDOM = AppDOM.querySelector('#number-of-events');
+            NumberOfEventsInput = within(NumberOfEventsDOM).queryByRole('textbox');
+        });
 
-    then(/^the user should see (\d+) events displayed$/, async (arg0) => {
-      await waitFor(() => {
-        const EventListItems = within(EventListDOM).queryAllByRole("listitem");
-        expect(EventListItems.length).toBe(32);
-      });
-    });
-  });
-
-  // end of Scenario 1 //
-
-  // Scenario 2 //
-  test("User can change the number of events displayed", ({
-    given,
-    when,
-    then,
-  }) => {
-    let AppComponent;
-    let AppDOM;
-    let EventListDOM;
-
-    given("the user at main page and shows list of events", async () => {
-        AppComponent = render(<App />);
-        AppDOM = AppComponent.container.firstChild;
-        EventListDOM = AppDOM.querySelector("#event-list");
-
-        await waitFor(() => {
-            const EventListItems = within(EventListDOM).queryAllByRole("listitem");
+        then('the default number is 32', () => {
+            expect(parseInt(NumberOfEventsInput.value, 10)).toBe(32);
         });
     });
 
+    test('User can change the number of events to display', ({ given, when, then }) => {
+        let AppComponent;
+        let AppDOM;
+         given('the page is open', () => {
+            AppComponent = render(<App />);
+            AppDOM = AppComponent.container.firstChild;
+        });
 
-    let NumberOfEventsDOM;
-    let numberTextBox;
-    when("the user input specific number of events to be displayed", async () => {
-        NumberOfEventsDOM = AppDOM.querySelector("#number-of-events");
-        numberTextBox = within(NumberOfEventsDOM).queryByRole('textbox');
-        const user = userEvent.setup();
-        await user.type(numberTextBox, '{backspace}{backspace}10')
-    });
+        let NumberOfEventsDOM;
+        let NumberOfEventsInput;
+        when('the user changes the number of events to display', async () => {
+            const user = userEvent.setup();
+            NumberOfEventsDOM = AppDOM.querySelector('#number-of-events');
+            NumberOfEventsInput = within(NumberOfEventsDOM).queryByRole('textbox');
 
-    then(
-      "the user should see specified number of events being displayed", () => {
-        expect(numberTextBox).toHaveValue('10')
+            await user.type(NumberOfEventsInput, "{backspace}{backspace}10");
+
+            expect(NumberOfEventsInput.value).toBe("10");
+        });
+
+        then('the user should see their chosen number of events at once', async () => {
+            const EventListDOM = AppDOM.querySelector('#event-list');
+            let EventListItems;
+
+            await waitFor(() => {
+                EventListItems = within(EventListDOM).queryAllByRole('listitem');
+                expect(EventListItems.length).toBe(10);
+            });
+        });
     });
-  });
-  // end of Scenario 2 //
 });
