@@ -1,6 +1,4 @@
 import mockData from './mock-data';
-import axios from "axios";
-import NProgress from "nprogress";
 
 // takes an event array, uses map to create new array with only locations
 // remove all duplicates by creating another new array using spread operator
