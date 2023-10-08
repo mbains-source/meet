@@ -1,4 +1,4 @@
-import Event from './Event';
+import Event from 'components/Event.js';
 
 const EventList = ({ events }) => {
     return (
