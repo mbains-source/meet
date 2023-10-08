@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Event = ({ event }) => {
+const Event = ({ Event }) => {
     const [showDetails, setShowDetails] = useState(false);
     const toggleDetails = () => {
         setShowDetails(!showDetails);
@@ -8,12 +8,12 @@ const Event = ({ event }) => {
 
     return (
         <li>
-            <div className="event">
-                <h2>{event.summary}</h2>
+            <div className="Event">
+                <h2>{Event.summary}</h2>
                 {/* <div className="summary">{event.summary}</div> */}
-                <div className="location">{event.location}</div>
-                <div className="dateTime">{event.start.dateTime}</div>
-                {showDetails && <div className="description">{event.description}</div>}
+                <div className="location">{Event.location}</div>
+                <div className="dateTime">{Event.start.dateTime}</div>
+                {showDetails && <div className="description">{Event.description}</div>}
                 <button className="details-btn" onClick={toggleDetails}>
                     {showDetails ? "Hide Details" : "Show Details"}
                 </button>
